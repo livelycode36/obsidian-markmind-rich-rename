@@ -1,4 +1,5 @@
-export const DEBUG = true
+// export const DEBUG = true
+export const DEBUG = false
 if (DEBUG) console.log("DEBUG is enabled");
 
 export function debugLog(...args: unknown[]) {

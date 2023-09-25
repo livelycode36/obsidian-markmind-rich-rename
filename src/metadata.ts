@@ -1,11 +1,11 @@
-import { DataAdapter, TFile, normalizePath } from "obsidian";
+import { TFile } from "obsidian";
 import { path } from "src/path";
 
 
 /**
  * 文件的元数据
  */
-class Metadata {
+export class Metadata {
     /** 文件路径 */
     path: string;
 
