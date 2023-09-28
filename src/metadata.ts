@@ -41,7 +41,6 @@ export class Metadata {
         this.extension = extension;
         this.parentPath = parentPath;
         this.parentName = parentName;
-        this.attachmentFile = attachmentFile;
     }
 
 }
@@ -52,12 +51,12 @@ export class Metadata {
  * @param {string} file - The full path to the file.
  * @return {Metadata} A new instance of Metadata containing information about the file.
  */
-export function getMetadata(file: string, attach?: TFile): Metadata {
+export function getMetadata(file: string): Metadata {
     const parentPath = path.dirname(file);
     const parentName = path.basename(parentPath);
     const name = path.basename(file);
     const extension = path.extname(file);
     const basename = path.basename(file, extension);
 
-    return new Metadata(file, name, basename, extension, parentPath, parentName, attach);
+    return new Metadata(file, name, basename, extension, parentPath, parentName);
 }
