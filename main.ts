@@ -147,36 +147,11 @@ export default class MarkmindRenamePlugin extends Plugin {
 
 		// 判断是否md文件
 		if (newTFile.extension == "md") {
-			this.app.fileManager.processFrontMatter(newTFile, frontmatter => {
-				// 当前重命名的是markmind文件，且是rich模式
-				// markmind改名，更新markdown中的 markmind节点链接
-				if (this.isMarkmindRich(frontmatter)) {
-					debugLog("重命名的是 markmind文件的rich模式")
-					markdownFiles.forEach((mdFile) => {
-						this.app.vault.process(mdFile, content => {
-							content = this.markmindLinkProcessor(content, renameData)
-							if (renameData.isUpdate) {
-								new Notice(`${mdFile.path}中的链接已更新！`)
-								// 重新初始化
-								renameData.isUpdate = false
-							}
-							// 没有匹配到正则，直接返回
-							return content
-						}).catch((error) => {
-							debugLog("error:", error)
-						})
-					})
-				} else {
-					debugLog("重命名的是 普通md文件")
-					this.updateMarkmindLink(renameData);
-				}
-			}).catch((error) => {
-				debugLog("error:", error)
-			})
+			debugLog("重命名的是 md文件")
+			this.updateMarkmindLink(renameData);
 			// 不是md文件（pdf、jpg等）
 		} else {
 			debugLog("重命名的是 非md文件（pdf、jpg等）")
-			debugger
 			this.updateMarkmindLink(renameData);
 		}
 
@@ -254,7 +229,7 @@ export default class MarkmindRenamePlugin extends Plugin {
 		let originContent = content
 
 		// wiki链接：[[文件名]]、[[路径/文件名]]、[[路径/文件名#^123]]
-		const wikiLinkRegex = /!?\[\[((?!\[\[).*)]]/g;
+		const wikiLinkRegex = /!?\[\[([^\]\]]+)\]\]/g
 		let match;
 
 		while ((match = wikiLinkRegex.exec(content)) !== null) {
@@ -340,7 +315,7 @@ export default class MarkmindRenamePlugin extends Plugin {
 		let originContent = content
 
 		// wiki链接：[[文件名]]、[[路径/文件名]]、[[路径/文件名#^123]]
-		const wikiLinkRegex = /!?\[\[((?!\[\[).*)]]/g;
+		const wikiLinkRegex = /!?\[\[([^\]\]]+)\]\]/g
 		let match;
 
 		while ((match = wikiLinkRegex.exec(content)) !== null) {
